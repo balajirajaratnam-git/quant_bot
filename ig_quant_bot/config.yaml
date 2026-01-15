@@ -1,0 +1,64 @@
+# =============================================================================
+# STRATEGY GOVERNANCE
+# =============================================================================
+strategy:
+  name: "RSI_Mean_Reversion_IG_V7"
+  universe:
+    - "QQQ"
+    - "SPY"
+    - "GLD"
+
+  # Indicator Parameters
+  rsi_period: 14
+  sma_period: 200
+
+  # Signal Thresholds
+  rsi_entry_threshold: 30
+  rsi_exit_threshold: 70
+
+  # Decision Logic
+  regime_filter: "BULL_STABLE"
+
+# =============================================================================
+# RISK AND MONEY MANAGEMENT
+# =============================================================================
+risk:
+  initial_capital: 100000.0
+  max_slots: 3
+
+  # Margin Allocation
+  per_slot_margin_fraction: 0.15
+
+  # Safety Buffer
+  min_free_margin_buffer: 0.10
+
+  # Platform Killswitch
+  max_drawdown_limit: 0.15
+
+  # Long Only Constraint
+  allow_shorting: false
+
+# =============================================================================
+# COST AND ACCOUNTING MODEL (IG SPREAD BETTING)
+# =============================================================================
+costs:
+  # IG Spread Betting typically has zero explicit commission
+  commission_fixed: 0.0
+
+  # Overnight Financing (simulation uses annual_funding_rate in the broker)
+  annual_funding_rate: 0.05
+
+  # Weekend funding multiplier (commonly 3 days on Friday)
+  weekend_multiplier: 3
+
+  # Adaptive spread model coefficient (kept for transparency)
+  adaptive_spread_k: 0.10
+
+# =============================================================================
+# VAULT AND PERSISTENCE
+# =============================================================================
+vault:
+  enabled: true
+  output_path: "vault/runs"
+  save_format: "parquet"
+  log_level: "INFO"
